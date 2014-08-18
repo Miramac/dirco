@@ -13,7 +13,9 @@ Node.js module to list files and directories recursively using ES 6 generators a
 ```
 
 ```js
-  var dirco = require('dirco');
+  var dirco = require('dirco')
+  , util = require('util');
+  
   dirco("./node_modules", {deep:true}, function(err, result) {
     console.log(util.inspect((result), {showHidden: false, depth: null}));
   });

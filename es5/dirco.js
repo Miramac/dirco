@@ -468,7 +468,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
     case 0:
       options = options || { };
-      options.deep = (options.deep !== 'undefined') ? options.deep : true;
+      options.deep = (typeof options.deep !== 'undefined') ? options.deep : true;
       level = level || 0;
 
       context$1$0.next = 5;
@@ -544,24 +544,28 @@ function getDirectory(fullPath) {
 
 function testFilter(str, filters) {
   var i;
-	if(filters) {
-		try {
-			for (i=0; i<filters.length; i++) {
-				if (str.match(filters[i])){
-					return true;
-				}
-			}
-			return false;
-		} catch(e) {	
-			return false;
-		}
-	} else {
-		return true;
-	}
+  if(filters) {
+    try {
+      for (i=0; i<filters.length; i++) {
+        if (str.match(filters[i])){
+          return true;
+        }
+      }
+      return false;
+    } catch(e) {  
+      return false;
+    }
+  } else {
+    return true;
+  }
 }
 
 
 var dirco = function(rootPath, options, cb) {
+  if(typeof cb === 'undefined') { 
+    cb = options;
+    options = {};
+  }
   co(wrapGenerator.mark(function callee$1$0() {
     var result;
 
