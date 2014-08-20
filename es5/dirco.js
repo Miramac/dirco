@@ -478,7 +478,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       files = [];
 
       if (!fsNode.stats.isDirectory()) {
-        context$1$0.next = 23;
+        context$1$0.next = 24;
         break;
       }
 
@@ -489,31 +489,32 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       i=0;
     case 12:
       if (!(i < currentDir.files.length)) {
-        context$1$0.next = 23;
+        context$1$0.next = 24;
         break;
       }
 
       dirItem = {};
+      children = null;
       fullPath = path.join(currentDir.directory, currentDir.files[i]);
-      context$1$0.next = 17;
+      context$1$0.next = 18;
       return file(fullPath);
-    case 17:
+    case 18:
       dirItem = context$1$0.sent;
       if(dirItem.stats.isDirectory() && (options.deep === true || (options.deep !== false && options.deep >= level))) {
-        children = get(fullPath, options, level+1);
+        children = get(fullPath, options, ++level);
         dirItem.children = children;
       }
       files.push(dirItem);
-    case 20:
+    case 21:
       i++;
       context$1$0.next = 12;
       break;
-    case 23:
-      context$1$0.next = 25;
+    case 24:
+      context$1$0.next = 26;
       return files;
-    case 25:
-      return context$1$0.abrupt("return", context$1$0.sent);
     case 26:
+      return context$1$0.abrupt("return", context$1$0.sent);
+    case 27:
     case "end":
       return context$1$0.stop();
     }
@@ -562,10 +563,8 @@ function testFilter(str, filters) {
 
 
 var dirco = function(rootPath, options, cb) {
-  if(typeof cb === 'undefined') { 
-    cb = options;
-    options = {};
-  }
+  cb = (typeof cb !== 'undefined') ? cb : options;  
+  options = (cb !== options) ? options : {};
   co(wrapGenerator.mark(function callee$1$0() {
     var result;
 
@@ -584,8 +583,6 @@ var dirco = function(rootPath, options, cb) {
     }, callee$1$0, this);
   }))();
 };
-dirco.prototype.file = file;
-dirco.prototype.directory = directory;
-dirco.prototype.get = get;
 
 module.exports = dirco;
+
