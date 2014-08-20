@@ -16,78 +16,50 @@ Node.js module to list files and directories recursively using ES 6 generators a
   var dirco = require('dirco')
   , util = require('util');
   
-  dirco("./node_modules", {deep:true}, function(err, result) {
+  dirco("./node_modules", {depth:2}, function(err, result) {
     console.log(util.inspect((result), {showHidden: false, depth: null}));
   });
 ```
 
-Returns simple object with filename, path and fs.Stats: 
+## Options
+````
+depth: number (-1)        // level of search depth, -1 is infinity
+flatt: bool (false)       // list items without hierarchy (comming...) 
+stats: object (true)      // append fs.Stats object
+`````
+
+Returns directories and files with name, path and fs.Stats info as a tree. 
 ```
 [{
     "name": "co",
-    "path": "node_modules\\co",
+    "path": "node_modules/co",
+    "type": "directory",
     "stats": {
-      "dev": 0,
-      "mode": 16822,
-      "nlink": 1,
-      "uid": 0,
-      "gid": 0,
-      "rdev": 0,
-      "ino": 0,
-      "size": 0,
-      "atime": "2014-08-14T08:36:41.000Z",
-      "mtime": "2014-08-14T08:36:41.000Z",
-      "ctime": "2014-08-14T08:36:41.000Z"
+      //...
     },
     "children": [
       {
         "name": "index.js",
-        "path": "node_modules\\co\\index.js",
+        "path": "node_modules/co/index.js",
+        "type": "file",
         "stats": {
-          "dev": 0,
-          "mode": 33206,
-          "nlink": 1,
-          "uid": 0,
-          "gid": 0,
-          "rdev": 0,
-          "ino": 0,
-          "size": 5466,
-          "atime": "2014-08-14T08:36:41.000Z",
-          "mtime": "2014-08-14T08:36:41.000Z",
-          "ctime": "2014-08-14T08:36:41.000Z"
+         //...
         }
       },
       {
         "name": "package.json",
-        "path": "node_modules\\co\\package.json",
+        "path": "node_modules/co/package.json",
+        "type": "file",
         "stats": {
-          "dev": 0,
-          "mode": 33206,
-          "nlink": 1,
-          "uid": 0,
-          "gid": 0,
-          "rdev": 0,
-          "ino": 0,
-          "size": 1214,
-          "atime": "2014-08-14T08:36:41.000Z",
-          "mtime": "2014-08-14T08:36:41.000Z",
-          "ctime": "2014-08-14T08:36:41.000Z"
+          //...
         }
       },
       {
         "name": "Readme.md",
-        "path": "node_modules\\co\\Readme.md",
+        "path": "node_modules/co/Readme.md",
+        "type": "file",
         "stats": {
-          "dev": 0,
-          "mode": 33206,
-          "nlink": 1,
-          "uid": 0,
-          "gid": 0,
-          "rdev": 0,
-          "ino": 0,
-          "size": 8053,
-          "atime": "2014-08-14T08:36:41.000Z",
-          "mtime": "2014-08-14T08:36:41.000Z",
+          //...
           "ctime": "2014-08-14T08:36:41.000Z"
         }
       }
