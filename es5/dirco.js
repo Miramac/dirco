@@ -462,7 +462,7 @@ var directory = wrapGenerator.mark(function directory(fullPath) {
 });
 
 var get = wrapGenerator.mark(function get(rootPath, options, level) {
-  var fsNode, currentDir, dirItem, fullPath, files, tmp, children, stats;
+  var fsNode, currentDir, dirItem, fullPath, files, tmp, children, stats, i;
 
   return wrapGenerator(function get$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
@@ -478,22 +478,21 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
     case 7:
       fsNode = context$1$0.sent;
       files = [];
-      children = [];
       stats = {};
 
       if (!fsNode.stats.isDirectory()) {
-        context$1$0.next = 33;
+        context$1$0.next = 28;
         break;
       }
 
-      context$1$0.next = 14;
+      context$1$0.next = 13;
       return directory(rootPath);
-    case 14:
+    case 13:
       currentDir = context$1$0.sent;
       i=0;
-    case 16:
+    case 15:
       if (!(i < currentDir.files.length)) {
-        context$1$0.next = 33;
+        context$1$0.next = 28;
         break;
       }
 
@@ -501,22 +500,14 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       children = null;
       stats = {};
       fullPath = path.join(currentDir.directory, currentDir.files[i]);
-      context$1$0.next = 23;
+      context$1$0.next = 22;
       return file(fullPath);
-    case 23:
+    case 22:
       dirItem = context$1$0.sent;
-
-      if (!(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level))) {
-        context$1$0.next = 29;
-        break;
+      if(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level)) {
+        children =  get( dirItem.path , options, level+1);
+        dirItem.children = children;
       }
-
-      context$1$0.next = 27;
-      return get( dirItem.path , options, level+1);
-    case 27:
-      children = context$1$0.sent;
-      dirItem.children = children;
-    case 29:
       /*     if (options.stats !== true){
             if (typeof options.stats === 'string'){
               stats[options.stats] = dirItem.stats[options.stats];
@@ -526,16 +517,16 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
             }
           } */
       files.push(dirItem);
-    case 30:
+    case 25:
       i++;
-      context$1$0.next = 16;
+      context$1$0.next = 15;
       break;
-    case 33:
-      context$1$0.next = 35;
+    case 28:
+      context$1$0.next = 30;
       return files;
-    case 35:
+    case 30:
       return context$1$0.abrupt("return", context$1$0.sent);
-    case 36:
+    case 31:
     case "end":
       return context$1$0.stop();
     }

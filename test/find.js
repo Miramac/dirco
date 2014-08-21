@@ -1,12 +1,10 @@
 var dirco = require('../')
 , util = require('util')
-, patter = /^.+\.sql$/i;
+, patter = /^.+\.js$/i; //find all .js files
 
-dirco("p:\\Daimler\\DC54_01A_DES_2014\\07_SQL_und_Cognos\\SQL_Skripte_Employee_DB", {depth:-1, stats:false},function(err, result) {
-  console.log(util.inspect(result, {showHidden: false, depth: null}));
-  console.log(find(result,patter)); // /^\W*(\d+_)*alt\W*$/ig));
+dirco(__dirname+'/../', {depth:-1, stats:false},function(err, result) {
+  console.log(find(result,patter)); 
 });
-
 
 
 function find(root, patter) {
