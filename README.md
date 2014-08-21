@@ -23,9 +23,9 @@ Node.js module to list files and directories recursively using ES 6 generators a
 
 ## Options
 ````
-depth: number (-1)        // level of search depth, -1 is infinity
-flatt: bool (false)       // list items without hierarchy (comming...) 
-stats: object (true)      // append fs.Stats object
+depth: number (-1)                    // level of search depth, -1 is infinity
+flatt: bool (false)                   // list items without hierarchy (comming...) 
+stats: bool|array|string (true)      // append fs.Stats object
 `````
 
 Returns directories and files with name, path and fs.Stats info as a tree. 
@@ -60,7 +60,6 @@ Returns directories and files with name, path and fs.Stats info as a tree.
         "type": "file",
         "stats": {
           //...
-          "ctime": "2014-08-14T08:36:41.000Z"
         }
       }
     ]
