@@ -462,7 +462,7 @@ var directory = wrapGenerator.mark(function directory(fullPath) {
 });
 
 var get = wrapGenerator.mark(function get(rootPath, options, level) {
-  var fsNode, currentDir, dirItem, fullPath, files, tmp, children, stats, i;
+  var fsNode, currentDir, dirItem, fullPath, files, tmp, stats, i;
 
   return wrapGenerator(function get$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
@@ -481,7 +481,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       stats = {};
 
       if (!fsNode.stats.isDirectory()) {
-        context$1$0.next = 28;
+        context$1$0.next = 29;
         break;
       }
 
@@ -492,7 +492,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       i=0;
     case 15:
       if (!(i < currentDir.files.length)) {
-        context$1$0.next = 28;
+        context$1$0.next = 29;
         break;
       }
 
@@ -505,28 +505,27 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
     case 22:
       dirItem = context$1$0.sent;
       if(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level)) {
-        children =  get( dirItem.path , options, level+1);
-        dirItem.children = children;
+        dirItem.children = get( dirItem.path , options, level+1);
       }
-      /*     if (options.stats !== true){
-            if (typeof options.stats === 'string'){
-              stats[options.stats] = dirItem.stats[options.stats];
-              dirItem.stats = stats;
-            } else {
-              delete dirItem.stats;
-            }
-          } */
+      if (options.stats !== true){
+       if (typeof options.stats === 'string'){
+         stats[options.stats] = dirItem.stats[options.stats];
+         dirItem.stats = stats;
+       } else {
+         delete dirItem.stats;
+       }
+     }
       files.push(dirItem);
-    case 25:
+    case 26:
       i++;
       context$1$0.next = 15;
       break;
-    case 28:
-      context$1$0.next = 30;
+    case 29:
+      context$1$0.next = 31;
       return files;
-    case 30:
-      return context$1$0.abrupt("return", context$1$0.sent);
     case 31:
+      return context$1$0.abrupt("return", context$1$0.sent);
+    case 32:
     case "end":
       return context$1$0.stop();
     }
