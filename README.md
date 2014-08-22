@@ -1,6 +1,6 @@
 dirco
 =====
-Node.js module to list directories and files recursively. It's using ES 6 generators and [co](https://github.com/visionmedia/co), but wrap with the [regenerator](https://github.com/facebook/regenerator) runtime so it can be used with ES 5 engines like node 0.10 or below.
+Node.js module for listing directories and files recursively. It's using ES 6 generators and [co](https://github.com/visionmedia/co), but wrap with the [regenerator](https://github.com/facebook/regenerator) runtime so it can be used with ES 5 engines like node 0.10 or below.
 
 ## Install
 ```

@@ -1,7 +1,7 @@
 {
   "name": "dirco",
-  "version": "0.1.7",
-  "description": "List files and directories recursively using ES 6 generators and co",
+  "version": "0.1.8",
+  "description": "Node.js module for listing directories and files recursively using ES 6 generator and visionmedia/co.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
