@@ -24,8 +24,8 @@ Node.js module to list files and directories recursively using ES 6 generators a
 ## Options
 ````
 depth: number (-1)                    // level of search depth, -1 is infinity
-flatt: bool (false)                   // list items without hierarchy (comming...) 
-stats: bool|array|string (true)      // append fs.Stats object
+flat: bool (false)                   // list items in one array without hierarchy
+stats: bool|array|string (true)       // append fs.Stats object
 `````
 
 Returns directories and files with name, path and fs.Stats info as a tree. 
@@ -65,3 +65,46 @@ Returns directories and files with name, path and fs.Stats info as a tree.
     ]
   }]
   ```
+  
+## Examples
+Searching in directory and file names
+````
+var dirco = require('../') //used the ES5 version, use require('../lib/dirco') for ES6
+, patter = /^.+\.js$/i; //find all .js files
+
+dirco('./', {stats:false},function( err, result) {
+  console.log(find(result,patter)); 
+});
+
+function find(root, patter) {
+  var item, items = []
+  , i ;
+  for(i=0; i<root.length;i++) {
+    item = root[i];
+    if(item.name.match(patter)) {
+      items.push(item.path);
+    } else {
+      if(item.children) {
+        items = items.concat(find(item.children, patter));
+      }
+    }
+  }
+  return items;
+}
+
+````
+
+Get total size of the directory (using flat option)
+```
+var dirco = require('dirco');
+
+dirco('./', {flat:true},function(err, result) {
+ var i, totalSize = 0;
+ for(i=0; i<result.length; i++) {
+  totalSize += result[i].stats.size;
+ }
+ console.log(Math.round((totalSize / 1024), 10) + ' KB') ; // 142 KB
+});
+
+
+```
