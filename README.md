@@ -1,6 +1,6 @@
 dirco
 =====
-Node.js module to list files and directories recursively using ES 6 generators and [co](https://github.com/visionmedia/co).
+Node.js module to list directories and files recursively. It's using ES 6 generators and [co](https://github.com/visionmedia/co), but wrap with the [regenerator](https://github.com/facebook/regenerator) runtime so it can be used with ES 5 engines like node 0.10 or below.
 
 ## Install
 ```
@@ -69,7 +69,7 @@ Returns directories and files with name, path and fs.Stats info as a tree.
 ## Examples
 Searching in directory and file names
 ````
-var dirco = require('../') //used the ES5 version, use require('../lib/dirco') for ES6
+var dirco = require('dirco')
 , patter = /^.+\.js$/i; //find all .js files
 
 dirco('./', {stats:false},function( err, result) {
