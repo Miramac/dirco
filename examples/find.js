@@ -1,5 +1,4 @@
 var dirco = require('../') //used the ES5 version, use require('../lib/dirco') for ES6
-, util = require('util')
 , patter = /^.+\.js$/i; //find all .js files
 
 dirco(__dirname+'/../', {depth:-1, stats:false},function(err, result) {
