@@ -29,7 +29,7 @@ stats: bool|array|string (true)       // append fs.Stats object
 `````
 
 Returns directories and files with name, path and fs.Stats info as a tree. 
-```
+```js
 [{
     "name": "co",
     "path": "node_modules/co",
@@ -68,7 +68,7 @@ Returns directories and files with name, path and fs.Stats info as a tree.
   
 ## Examples
 Searching in directory and file names
-````
+````js
 var dirco = require('dirco')
 , patter = /^.+\.js$/i; //find all .js files
 
@@ -95,7 +95,7 @@ function find(root, patter) {
 ````
 
 Get total size of the directory (using flat option)
-```
+```js
 var dirco = require('dirco');
 
 dirco('./', {flat:true},function(err, result) {
@@ -105,6 +105,4 @@ dirco('./', {flat:true},function(err, result) {
  }
  console.log(Math.round((totalSize / 1024), 10) + ' KB') ; // 142 KB
 });
-
-
 ```
