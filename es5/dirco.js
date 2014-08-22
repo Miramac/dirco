@@ -462,15 +462,16 @@ var directory = wrapGenerator.mark(function directory(fullPath) {
 });
 
 var get = wrapGenerator.mark(function get(rootPath, options, level) {
-  var fsNode, currentDir, dirItem, fullPath, files, tmp, stats, i;
+  var fsNode, currentDir, dirItem, fullPath, files, tmp, stats, children, i;
 
   return wrapGenerator(function get$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
     case 0:
+      //parameter level is for internal use only!
       options = options || { };
       options.depth = (typeof options.depth !== 'undefined') ? options.depth : -1;
       options.stats = (typeof options.stats !== 'undefined') ? options.stats : true;
-      options.flatt = (typeof options.flatt !== 'undefined') ? options.flatt : false;
+      options.flat = (typeof options.flat !== 'undefined') ? options.flat : false;
       level = level || 0;
 
       context$1$0.next = 7;
@@ -481,7 +482,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       stats = {};
 
       if (!fsNode.stats.isDirectory()) {
-        context$1$0.next = 29;
+        context$1$0.next = 34;
         break;
       }
 
@@ -492,21 +493,35 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       i=0;
     case 15:
       if (!(i < currentDir.files.length)) {
-        context$1$0.next = 29;
+        context$1$0.next = 34;
         break;
       }
 
       dirItem = {};
       children = null;
       stats = {};
+      children = [];
       fullPath = path.join(currentDir.directory, currentDir.files[i]);
-      context$1$0.next = 22;
+      context$1$0.next = 23;
       return file(fullPath);
-    case 22:
+    case 23:
       dirItem = context$1$0.sent;
-      if(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level)) {
-        dirItem.children = get( dirItem.path , options, level+1);
+
+      if (!(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level))) {
+        context$1$0.next = 29;
+        break;
       }
+
+      context$1$0.next = 27;
+      return get( dirItem.path , options, level+1);
+    case 27:
+      children = context$1$0.sent;
+      if(options.flat) {
+       files = files.concat(children)
+      } else {
+       dirItem.children = children;
+      }
+    case 29:
       if (options.stats !== true){
        if (typeof options.stats === 'string'){
          stats[options.stats] = dirItem.stats[options.stats];
@@ -516,16 +531,16 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
        }
      }
       files.push(dirItem);
-    case 26:
+    case 31:
       i++;
       context$1$0.next = 15;
       break;
-    case 29:
-      context$1$0.next = 31;
+    case 34:
+      context$1$0.next = 36;
       return files;
-    case 31:
+    case 36:
       return context$1$0.abrupt("return", context$1$0.sent);
-    case 32:
+    case 37:
     case "end":
       return context$1$0.stop();
     }
