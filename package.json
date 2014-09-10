@@ -1,11 +1,19 @@
 {
   "name": "dirco",
-  "version": "0.1.5",
-  "description": "List files and directories recursively using ES 6 generators and co",
+  "version": "0.1.9",
+  "description": "List directories and files recursively using ES 6 generators.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "directory",
+    "file",
+    "search",
+    "tree",
+    "recursiv",
+    "fs"
+  ],
   "author": "Fabian Roloff <fabian.roloff@vocatus.de>",
   "repository": {
           "type" : "git",
