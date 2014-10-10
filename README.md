@@ -104,6 +104,5 @@ dirco(__dirname+'/../', {filters:[/^.+\.js$/i], flat:true, stats:false}, functio
   console.log(result);
 });
 
-
 ````
 
