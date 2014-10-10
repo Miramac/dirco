@@ -1,6 +1,6 @@
 {
   "name": "dirco",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "List directories and files recursively using ES 6 generators.",
   "main": "index.js",
   "scripts": {
