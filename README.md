@@ -91,13 +91,6 @@ dirco('./', {flat:true},function(err, result) {
 });
 ```
 
-var dirco = require('../es5') //using the ES5 version, use require('../') for ES6
-; 
-dirco(__dirname+'/../', {filters:[/^.+\.js$/i], flat:true, stats:false}, function(err, result) {
-  console.log(result);
-});
-
-
 Searching in directory and file names using the filter option
 ````js
 dirco(__dirname+'/../', {filters:[/^.+\.js$/i], flat:true, stats:false}, function(err, result) {
@@ -105,4 +98,3 @@ dirco(__dirname+'/../', {filters:[/^.+\.js$/i], flat:true, stats:false}, functio
 });
 
 ````
-
