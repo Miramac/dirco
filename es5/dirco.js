@@ -1,29 +1,31 @@
-/*jshint laxcomma: true, node: true, esnext:true*/
+/*jshint laxcomma: true, node: true, esnext: true*/
 (function(
   // Reliable reference to the global object (i.e. window in browsers).
   global,
 
   // Dummy constructor that we use as the .constructor property for
   // functions that return Generator objects.
-  GeneratorFunction,
-
-  // Undefined value, more compressible than void 0.
-  undefined
+  GeneratorFunction
 ) {
   var hasOwn = Object.prototype.hasOwnProperty;
+  var undefined; // More compressible than void 0.
 
-  if (global.wrapGenerator) {
+  try {
+    // Make a reasonable attempt to provide a Promise polyfill.
+    var Promise = global.Promise || (global.Promise = require("promise"));
+  } catch (ignored) {}
+
+  if (global.regeneratorRuntime) {
     return;
   }
 
-  function wrapGenerator(innerFn, outerFn, self, tryList) {
+  var runtime = global.regeneratorRuntime =
+    typeof exports === "undefined" ? {} : exports;
+
+  function wrap(innerFn, outerFn, self, tryList) {
     return new Generator(innerFn, outerFn, self || null, tryList || []);
   }
-
-  global.wrapGenerator = wrapGenerator;
-  if (typeof exports !== "undefined") {
-    exports.wrapGenerator = wrapGenerator;
-  }
+  runtime.wrap = wrap;
 
   var GenStateSuspendedStart = "suspendedStart";
   var GenStateSuspendedYield = "suspendedYield";
@@ -40,10 +42,35 @@
   GFp.prototype = Gp;
   Gp.constructor = GFp;
 
-  wrapGenerator.mark = function(genFun) {
+  runtime.mark = function(genFun) {
     genFun.__proto__ = GFp;
     genFun.prototype = Object.create(Gp);
     return genFun;
+  };
+
+  runtime.async = function(innerFn, self, tryList) {
+    return new Promise(function(resolve, reject) {
+      var generator = wrap(innerFn, self, tryList);
+      var callNext = step.bind(generator.next);
+      var callThrow = step.bind(generator.throw);
+
+      function step(arg) {
+        try {
+          var info = this(arg);
+          var value = info.value;
+        } catch (error) {
+          return reject(error);
+        }
+
+        if (info.done) {
+          resolve(value);
+        } else {
+          Promise.resolve(value).then(callNext, callThrow);
+        }
+      }
+
+      callNext();
+    });
   };
 
   // Ensure isGeneratorFunction works when Function#name not supported.
@@ -51,7 +78,7 @@
     GeneratorFunction.name = "GeneratorFunction";
   }
 
-  wrapGenerator.isGeneratorFunction = function(genFun) {
+  runtime.isGeneratorFunction = function(genFun) {
     var ctor = genFun && genFun.constructor;
     return ctor ? GeneratorFunction.name === ctor.name : false;
   };
@@ -131,6 +158,9 @@
             method = "next";
             arg = undefined;
           }
+
+        } else if (method === "return") {
+          context.abrupt("return", arg);
         }
 
         state = GenStateExecuting;
@@ -173,6 +203,7 @@
 
     generator.next = invoke.bind(generator, "next");
     generator.throw = invoke.bind(generator, "throw");
+    generator.return = invoke.bind(generator, "return");
 
     return generator;
   }
@@ -217,7 +248,7 @@
     this.reset();
   }
 
-  wrapGenerator.keys = function(object) {
+  runtime.keys = function(object) {
     var keys = [];
     for (var key in object) {
       keys.push(key);
@@ -266,7 +297,7 @@
     }
     return iterator;
   }
-  wrapGenerator.values = values;
+  runtime.values = values;
 
   Context.prototype = {
     constructor: Context,
@@ -432,8 +463,8 @@
   };
 }).apply(this, Function("return [this, function GeneratorFunction(){}]")());
 
-var file = wrapGenerator.mark(function file(fullPath) {
-  return wrapGenerator(function file$(context$1$0) {
+var file = regeneratorRuntime.mark(function file(fullPath) {
+  return regeneratorRuntime.wrap(function file$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
     case 0:
       context$1$0.next = 2;
@@ -447,8 +478,8 @@ var file = wrapGenerator.mark(function file(fullPath) {
   }, file, this);
 });
 
-var directory = wrapGenerator.mark(function directory(fullPath) {
-  return wrapGenerator(function directory$(context$1$0) {
+var directory = regeneratorRuntime.mark(function directory(fullPath) {
+  return regeneratorRuntime.wrap(function directory$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
     case 0:
       context$1$0.next = 2;
@@ -462,10 +493,10 @@ var directory = wrapGenerator.mark(function directory(fullPath) {
   }, directory, this);
 });
 
-var get = wrapGenerator.mark(function get(rootPath, options, level) {
+var get = regeneratorRuntime.mark(function get(rootPath, options, level) {
   var fsNode, currentDir, dirItem, fullPath, files, tmp, stats, children, i;
 
-  return wrapGenerator(function get$(context$1$0) {
+  return regeneratorRuntime.wrap(function get$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
     case 0:
       //parameter level is for internal use only!
@@ -485,7 +516,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       stats = {};
 
       if (!fsNode.stats.isDirectory()) {
-        context$1$0.next = 35;
+        context$1$0.next = 37;
         break;
       }
 
@@ -541,11 +572,20 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
       context$1$0.next = 16;
       break;
     case 35:
-      context$1$0.next = 37;
-      return files;
+      context$1$0.next = 41;
+      break;
     case 37:
+      context$1$0.next = 39;
+      return file(rootPath);
+    case 39:
+      context$1$0.t0 = context$1$0.sent;
+      return context$1$0.abrupt("return", [context$1$0.t0]);
+    case 41:
+      context$1$0.next = 43;
+      return files;
+    case 43:
       return context$1$0.abrupt("return", context$1$0.sent);
-    case 38:
+    case 44:
     case "end":
       return context$1$0.stop();
     }
@@ -596,10 +636,10 @@ function testFilter(str, filters) {
 var dirco = function(rootPath, options, cb) {
   cb = (typeof cb !== 'undefined') ? cb : options;  
   options = (cb !== options) ? options : {};
-  co(wrapGenerator.mark(function callee$1$0() {
+  co(regeneratorRuntime.mark(function callee$1$0() {
     var result;
 
-    return wrapGenerator(function callee$1$0$(context$2$0) {
+    return regeneratorRuntime.wrap(function callee$1$0$(context$2$0) {
       while (1) switch (context$2$0.prev = context$2$0.next) {
       case 0:
         context$2$0.next = 2;
