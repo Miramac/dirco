@@ -25,7 +25,7 @@ dirco(__dirname+'/../', {stats:'size', flat:true},function(err, result) {
  for(i=0; i<result.length; i++) {
   totalSize += result[i].stats.size;
  }
- console.log(Math.round((totalSize / 1024), 10) + ' KB') ; // 142 KB
+ console.log(Math.round((totalSize / 1024), 10) + ' KB');
 });
 
 
