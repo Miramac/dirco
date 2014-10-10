@@ -1,3 +1,4 @@
+/*jshint laxcomma: true, node: true, esnext:true*/
 (function(
   // Reliable reference to the global object (i.e. window in browsers).
   global,
@@ -519,7 +520,7 @@ var get = wrapGenerator.mark(function get(rootPath, options, level) {
     case 28:
       children = context$1$0.sent;
       if(options.flat) {
-        files = files.concat(children)
+        files = files.concat(children);
       } else {
         dirItem.children = children;
       }
