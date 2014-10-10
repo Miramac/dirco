@@ -1,6 +1,8 @@
 dirco
 =====
-Node.js module for listing directories and files recursively. It's using ES 6 generators and [co](https://github.com/visionmedia/co), but wrap with the [regenerator](https://github.com/facebook/regenerator) runtime so it can be used with ES 5 engines like node 0.10 or below.
+Node.js module for listing directories and files recursively. It's using ES 6 generators and [co](https://github.com/visionmedia/co).
+
+It comes also with the [regenerator](https://github.com/facebook/regenerator) runtime so it can be used with ES 5 engines like node 0.10 or below.
 
 ## Install
 ```
@@ -9,16 +11,23 @@ Node.js module for listing directories and files recursively. It's using ES 6 ge
 
 ## Usage
 ```js
-  dirco(path [, options] , callback)
+//ES6
+var dirco = require('dirco');
+//ES5: 
+var dirco = require('dirco/es5');
+
+
+dirco(path [, options] , callback);
 ```
 
 ```js
-  var dirco = require('dirco')
-  , util = require('util');
-  
-  dirco("./node_modules", {depth:2}, function(err, result) {
+//using ES5: 
+var dirco = require('dirco/es5')
+, util = require('util');
+
+dirco('./node_modules', {depth:2}, function(err, result) {
     console.log(util.inspect((result), {showHidden: false, depth: null}));
-  });
+});
 ```
 
 ## Options
@@ -67,42 +76,34 @@ Returns directories and files with name, path and fs.Stats info as a tree.
   ```
   
 ## Examples
-Searching in directory and file names
-````js
-var dirco = require('dirco')
-, patter = /^.+\.js$/i; //find all .js files
-
-dirco('./', {stats:false},function( err, result) {
-  console.log(find(result,patter)); 
-});
-
-function find(root, patter) {
-  var item, items = []
-  , i ;
-  for(i=0; i<root.length;i++) {
-    item = root[i];
-    if(item.name.match(patter)) {
-      items.push(item.path);
-    } else {
-      if(item.children) {
-        items = items.concat(find(item.children, patter));
-      }
-    }
-  }
-  return items;
-}
-
-````
 
 Get total size of the directory (using flat option)
 ```js
-var dirco = require('dirco');
+//using ES5: 
+var dirco = require('dirco/es5')
 
 dirco('./', {flat:true},function(err, result) {
- var i, totalSize = 0;
- for(i=0; i<result.length; i++) {
-  totalSize += result[i].stats.size;
- }
- console.log(Math.round((totalSize / 1024), 10) + ' KB') ; // 142 KB
+    var i, totalSize = 0;
+    for(i=0; i<result.length; i++) {
+        totalSize += result[i].stats.size;
+    }
+    console.log(Math.round((totalSize / 1024), 10) + ' KB') ; // 142 KB
 });
 ```
+
+var dirco = require('../es5') //using the ES5 version, use require('../') for ES6
+; 
+dirco(__dirname+'/../', {filters:[/^.+\.js$/i], flat:true, stats:false}, function(err, result) {
+  console.log(result);
+});
+
+
+Searching in directory and file names using the filter option
+````js
+dirco(__dirname+'/../', {filters:[/^.+\.js$/i], flat:true, stats:false}, function(err, result) {
+  console.log(result);
+});
+
+
+````
+
