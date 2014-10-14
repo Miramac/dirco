@@ -3,6 +3,17 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    jshint: {
+      files: ['Gruntfile.js', 'lib/*.js', 'test/*.js'],
+      options: {
+        // options here to override JSHint defaults
+        globals: {
+          node: true,
+          console: true,
+          module: true
+        }
+      }
+    },
     regenerator: {
         options: {
             includeRuntime: true
@@ -20,17 +31,6 @@ module.exports = function(grunt) {
           quiet: false
         },
         src: ['test/*.mocha.js']
-      }
-    },
-    jshint: {
-      files: ['Gruntfile.js', 'lib/**/*.js'],
-      options: {
-        // options here to override JSHint defaults
-        globals: {
-          node: true,
-          console: true,
-          module: true
-        }
       }
     },
     watch: {
