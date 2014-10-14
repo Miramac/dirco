@@ -513,49 +513,47 @@ var get = regeneratorRuntime.mark(function get(rootPath, options, level) {
     case 8:
       fsNode = context$1$0.sent;
       files = [];
-      stats = {};
 
       if (!fsNode.stats.isDirectory()) {
-        context$1$0.next = 37;
-        break;
-      }
-
-      context$1$0.next = 14;
-      return directory(rootPath);
-    case 14:
-      currentDir = context$1$0.sent;
-      i=0;
-    case 16:
-      if (!(i < currentDir.files.length)) {
         context$1$0.next = 35;
         break;
       }
 
-      dirItem = {};
-      children = null;
-      stats = {};
-      children = [];
-      fullPath = path.join(currentDir.directory, currentDir.files[i]);
-      context$1$0.next = 24;
-      return file(fullPath);
-    case 24:
-      dirItem = context$1$0.sent;
-
-      if (!(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level))) {
-        context$1$0.next = 30;
+      context$1$0.next = 13;
+      return directory(rootPath);
+    case 13:
+      currentDir = context$1$0.sent;
+      i=0;
+    case 15:
+      if (!(i < currentDir.files.length)) {
+        context$1$0.next = 33;
         break;
       }
 
-      context$1$0.next = 28;
+      dirItem = {};
+      stats = {};
+      children = [];
+      fullPath = path.join(currentDir.directory, currentDir.files[i]);
+      context$1$0.next = 22;
+      return file(fullPath);
+    case 22:
+      dirItem = context$1$0.sent;
+
+      if (!(dirItem.stats.isDirectory() && (options.depth === -1 || options.depth >= level))) {
+        context$1$0.next = 28;
+        break;
+      }
+
+      context$1$0.next = 26;
       return get( dirItem.path , options, level+1);
-    case 28:
+    case 26:
       children = context$1$0.sent;
       if(options.flat) {
         files = files.concat(children);
       } else {
         dirItem.children = children;
       }
-    case 30:
+    case 28:
       if (options.stats !== true){
        if (typeof options.stats === 'string'){
          stats[options.stats] = dirItem.stats[options.stats];
@@ -567,25 +565,25 @@ var get = regeneratorRuntime.mark(function get(rootPath, options, level) {
       if(testFilter(dirItem.name, options.filters)) {
         files.push(dirItem);
       }
-    case 32:
+    case 30:
       i++;
-      context$1$0.next = 16;
+      context$1$0.next = 15;
+      break;
+    case 33:
+      context$1$0.next = 39;
       break;
     case 35:
-      context$1$0.next = 41;
-      break;
-    case 37:
-      context$1$0.next = 39;
+      context$1$0.next = 37;
       return file(rootPath);
-    case 39:
+    case 37:
       context$1$0.t0 = context$1$0.sent;
       return context$1$0.abrupt("return", [context$1$0.t0]);
-    case 41:
-      context$1$0.next = 43;
+    case 39:
+      context$1$0.next = 41;
       return files;
-    case 43:
+    case 41:
       return context$1$0.abrupt("return", context$1$0.sent);
-    case 44:
+    case 42:
     case "end":
       return context$1$0.stop();
     }
@@ -634,8 +632,8 @@ function testFilter(str, filters) {
 }
 
 var dirco = function(rootPath, options, cb) {
-  cb = (typeof cb !== 'undefined') ? cb : options;  
-  options = (cb !== options) ? options : {};
+  options = options || {};
+  cb = (typeof options === 'function') ? options : cb;
   co(regeneratorRuntime.mark(function callee$1$0() {
     var result;
 
