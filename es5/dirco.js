@@ -462,6 +462,7 @@
     }
   };
 }).apply(this, Function("return [this, function GeneratorFunction(){}]")());
+'use strict';
 
 var file = regeneratorRuntime.mark(function file(fullPath) {
   return regeneratorRuntime.wrap(function file$(context$1$0) {
@@ -494,7 +495,7 @@ var directory = regeneratorRuntime.mark(function directory(fullPath) {
 });
 
 var get = regeneratorRuntime.mark(function get(rootPath, options, level) {
-  var fsNode, currentDir, dirItem, fullPath, files, tmp, stats, children, i;
+  var fsNode, currentDir, dirItem, fullPath, files, stats, children, i;
 
   return regeneratorRuntime.wrap(function get$(context$1$0) {
     while (1) switch (context$1$0.prev = context$1$0.next) {
@@ -597,7 +598,7 @@ var fs = require('fs')
 function getFile(fullPath) {
   return function(fn){
     fs.stat(fullPath, function(err, stats){
-      if (err) return fn(err);
+      if (err) {return fn(err);}
       fn(null, {"name": path.basename(fullPath), "path":fullPath, "type": ((stats.isDirectory()) ? 'directory': 'file'), "stats": stats});
     });
   };
@@ -606,7 +607,7 @@ function getFile(fullPath) {
 function getDirectory(fullPath) {
   return function(fn){
     fs.readdir(fullPath, function(err, files){
-      if (err) return fn(err);
+      if (err) {return fn(err);}
       fn(null, {"directory":fullPath, "files": files});
     });
   };
@@ -634,7 +635,7 @@ function testFilter(str, filters) {
 var dirco = function(rootPath, options, cb) {
   options = options || {};
   cb = (typeof options === 'function') ? options : cb;
-  co(regeneratorRuntime.mark(function callee$1$0() {
+  co(regeneratorRuntime.mark(function callee$1$0(rootPath, options) {
     var result;
 
     return regeneratorRuntime.wrap(function callee$1$0$(context$2$0) {
@@ -644,13 +645,13 @@ var dirco = function(rootPath, options, cb) {
         return get(rootPath, options);
       case 2:
         result = context$2$0.sent;
-        cb(null,result);
+        return context$2$0.abrupt("return", result);
       case 4:
       case "end":
         return context$2$0.stop();
       }
     }, callee$1$0, this);
-  }))();
+  }))(rootPath, options, cb);
 };
 
 module.exports = dirco;
