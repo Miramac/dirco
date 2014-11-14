@@ -563,7 +563,7 @@ var get = regeneratorRuntime.mark(function get(rootPath, options, level) {
          delete dirItem.stats;
        }
      }
-      if(testFilter(dirItem.name, options.filters)) {
+      if(testFilter(dirItem.path, options.filters)) {
         files.push(dirItem);
       }
     case 30:
