@@ -1,5 +1,5 @@
 /*jshint laxcomma: true, node: true, esnext:true*/
-var dirco = require('../es5') //using the ES5 version, use require('../') for ES6
+var dirco = require('../') //for the ES5 version use require('../es5')
 ; 
 
 dirco(__dirname+'/../', {stats:'size'},function(err, result) {
