@@ -4,7 +4,7 @@
   "description": "Lists directories and files recursively using ES 6 generators.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/dirco.mocha.js"
+    "test": "mocha test/mocha.*.js"
   },
   "keywords": [
     "directory",
